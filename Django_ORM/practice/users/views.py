@@ -29,7 +29,7 @@ def signup(request):
       profile.save()
       auth.login(request, user)
 
-      return redirect('home') #회원가입 성공하면 홈페이지로 돌아가기
+      return redirect('blog:home') #회원가입 성공하면 홈페이지로 돌아가기
     return render(request, 'signup.html') #회원가입 실패시 다시 회원가입 페이지로 이동
   return render(request, 'signup.html')
 
@@ -43,14 +43,14 @@ def login(request):
 
     if user is not None:
       auth.login(request, user)
-      return redirect('home') # 정보가 일치하고 로그인 정보가 None이 아니라면 홈페이지로
+      return redirect('blog:home') # 정보가 일치하고 로그인 정보가 None이 아니라면 홈페이지로
     return render(request, 'login.html') # 로그인 정보가 None이면 그대로
   return render(request, 'login.html') # POST가 아닌 경우에도 그대로
 
 # 로그아웃
 def logout(request):
   auth.logout(request)
-  return redirect('home')
+  return redirect('blog:home')
 
 def profile(request, user_id):
   user = get_object_or_404(User, id=user_id)
