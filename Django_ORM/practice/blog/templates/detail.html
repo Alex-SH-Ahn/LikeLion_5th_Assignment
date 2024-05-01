@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>블로그 상세 페이지</title>
+        <style>
+            body {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+            }
+            img {
+                height: 400px;
+                width: 550px;
+            }
+            hr {
+                width: 70%;
+                height: 0.3px;
+            }
+            a {
+                text-decoration: none;
+                display: inline-block;
+                width: 10rem;
+                padding: 0.2rem;
+                margin: 0.5rem;
+                border-radius: 0.5rem;
+                background-color: #f2f2f2;
+                color: black;
+            }
+            a:hover { background-color: #e6e6e6; }
+            .nav {
+                display: flex;
+                justify-content: space-between;
+                width: 30%;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>블로그 상세 페이지</h1>
+        <br />
+        <hr />
+        <h2>{{blog.title}}</h2>
+        <hr />
+        {% if tags %}
+        <h3 style="margin: 10px">태그</h3>
+        <div style="display: flex">
+            {% for tag in tags %}
+            <p style="margin: 10px">{{ tag }}</p>
+            &nbsp; {% endfor %}
+        </div>
+        {% endif %}
+
+        <hr />
+        <p>{{blog.content}}</p>
+
+        {% if blog.image %}
+        <img src="{{blog.image.url}}" alt="이미지" />
+        {% endif %}
+
+        <p>{{blog.created_at}}</p>
+
+        <div class="nav">
+            <a href="{% url 'blog:home' %}">홈</a>
+            <a href="{% url 'blog:edit' blog.id %}">수정하기</a>
+            <a href="{% url 'blog:delete' blog.id %}">삭제하기</a>
+        </div>
+
+        <hr />
+
+        <div>
+            <form action="{% url 'blog:like' blog.pk %}" method="POST">
+                {% csrf_token %}
+                {% if user in blog.like_users.all %}
+                    <input type="submit" value="♡ 좋아요 취소" />
+                {% else %}
+                    <input type="submit" value="♥ 좋아요" />
+                {% endif %}
+            </form>
+        </div>
+
+        <a href="{% url 'blog:new_comment' blog.id %}">댓글 달기</a>
+
+        {% if comments %} {% for comment in comments %}
+        <hr />
+        <p>{{comment.content}}</p>
+        <p>{{comment.created_at}} 댓글쓴이: {{ comment.author }}</p>
+        {% endfor %} {% endif %}
+    </body>
+</html>

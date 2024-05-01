@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>My Web Page</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            text-align: center;
+        }
+        container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        .input, #tags { width: 75%; }
+        a, .btn {
+            text-decoration: none;
+            display: inline-block;
+            width: 10rem;
+            padding: 0.2rem;
+            margin: 0.5rem;
+            border-radius: 0.5rem;
+            background-color: #f2f2f2;
+            color: black;
+            outline: none;
+            border: none;
+            font-size: 1rem;
+        }
+        .btn { margin-top: 1rem; }
+        a:hover, .btn:hover { background-color: #e6e6e6; }
+    </style>
+</head>
+<body>
+    <h1>새 글 작성하기</h1>
+    <form action="{%url 'blog:create'%}" method="POST" enctype="multipart/form-data">
+        {% csrf_token %} 
+        <div class="container">
+            제목 : <input type="text" name="title" value="" class="input" /> <br /><br/>
+            본문 :
+            <textarea name="content" id="" cols="30" rows="10" class="input"></textarea> <br />
+            &nbsp;&nbsp;&nbsp;사진 : <input type="file" name="image" /><br />
+            <label for="tags">Tags:</label>
+            <select name="tags" id="tags" multiple>
+                {% for tag in tags %}
+                <option value="{{ tag.id }}">{{ tag.name }}</option>
+                {% endfor %}
+            </select> <br />
+            <input type="submit" value="작성하기" class="btn"/> <br />
+        </divcla>
+    </form>
+    <a href="{% url 'blog:home' %}">홈</a>
+
+</body>
+</html>
